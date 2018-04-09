@@ -13,12 +13,9 @@ def restaurant_ratings(filename):
     #create dictionary
     restaurant_scores = {}
 
-    is_new_add = raw_input("Do you want to add a restaurant?  Yes or No ")
-
-    if is_new_add == "Yes":
-        new_restaurant = add_restaurant_rating()
-        restaurant_scores[new_restaurant[0].title()] = new_restaurant[1]
-
+   # new_name, new_rating = add_restaurant_rating()
+    #restaurant_scores[new_name.title()] = new_rating
+    add_restaurant_rating(restaurant_scores)
     #stores restaurant and rating to dictionary
 
     for line in raw_restaurant_data:
@@ -26,16 +23,35 @@ def restaurant_ratings(filename):
         restaurant_scores[name] = rating
 
     #returns ratings in alphabetical order by restaurant
+    alpha_restaurants(restaurant_scores)
+
+    
+
+
+def add_restaurant_rating(restaurant_scores):
+    """Allows user to add a new restaurant to the list"""
+
+    is_new_add = raw_input("Do you want to add a restaurant?  Yes or No ")
+
+    if is_new_add != "Yes":
+        return restaurant_scores
+    else:
+        new_name = raw_input("What is the restaurant name? ")
+        new_rating = raw_input("What is the new rating? ")
+        while new_rating not in "12345":
+            new_rating = raw_input("Please enter valid rating 1-5: ")
+
+        restaurant_scores[new_name.title()] = new_rating
+
+        return restaurant_scores
+
+
+def alpha_restaurants(restaurant_scores):
+    """Allows user to view alphabetical restaurant scores"""
 
     for restaurant, rating in sorted(restaurant_scores.items()):
         print "%s is rated at %s." % (restaurant, rating)
 
-
-def add_restaurant_rating():
-    new_restaurant = raw_input("What is the restaurant name? ")
-    new_rating = raw_input("What is the new rating? ")
-    
-    return (new_restaurant, new_rating)
 
 
 restaurant_ratings(filename)
