@@ -16,15 +16,12 @@ def restaurant_ratings(filename):
     #stores restaurant and rating to dictionary
 
     for line in raw_restaurant_data:
-        tokened_restaurants = line.strip("\n").split(":")
-        restaurant_scores[tokened_restaurants[0]] = tokened_restaurants[1]
+        name, rating = line.strip().split(":")
+        restaurant_scores[name] = rating
 
     #returns ratings in alphabetical order by restaurant
 
-    alpha_restaurant_names = sorted(restaurant_scores)
-
-    for restaurant in alpha_restaurant_names:
-        rest_vals = restaurant_scores[restaurant]
-        print "%s is rated at %s." % (restaurant, rest_vals)
+    for restaurant, rating in sorted(restaurant_scores.items()):
+        print "%s is rated at %s." % (restaurant, rating)
 
 restaurant_ratings(filename)
