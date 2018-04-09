@@ -15,7 +15,7 @@ def restaurant_ratings(filename):
 
    # new_name, new_rating = add_restaurant_rating()
     #restaurant_scores[new_name.title()] = new_rating
-    add_restaurant_rating(restaurant_scores)
+    
     #stores restaurant and rating to dictionary
 
     for line in raw_restaurant_data:
@@ -23,9 +23,7 @@ def restaurant_ratings(filename):
         restaurant_scores[name] = rating
 
     #returns ratings in alphabetical order by restaurant
-    alpha_restaurants(restaurant_scores)
-
-    
+    menus_for_restuarant(restaurant_scores)
 
 
 def add_restaurant_rating(restaurant_scores):
@@ -38,7 +36,7 @@ def add_restaurant_rating(restaurant_scores):
     else:
         new_name = raw_input("What is the restaurant name? ")
         new_rating = raw_input("What is the new rating? ")
-        while new_rating not in "12345":
+        while new_rating not in ["1","2","3","4","5"]:
             new_rating = raw_input("Please enter valid rating 1-5: ")
 
         restaurant_scores[new_name.title()] = new_rating
@@ -49,8 +47,35 @@ def add_restaurant_rating(restaurant_scores):
 def alpha_restaurants(restaurant_scores):
     """Allows user to view alphabetical restaurant scores"""
 
+
     for restaurant, rating in sorted(restaurant_scores.items()):
         print "%s is rated at %s." % (restaurant, rating)
+
+
+def menus_for_restuarant(restaurant_scores):
+    """Allows user to select functions to call"""
+
+    user_choice = "0"
+    while user_choice != "3":
+
+        user_choice = raw_input("""
+        1. See all the ratings
+        2. Add a new restaurant
+        3. Quit
+        """)
+
+        if user_choice == "1":
+            alpha_restaurants(restaurant_scores)
+        elif user_choice == "2":
+            add_restaurant_rating(restaurant_scores)
+        elif user_choice == "3":
+            break
+        else:
+            user_choice = raw_input("Please enter a valid input. ")
+
+
+
+
 
 
 
