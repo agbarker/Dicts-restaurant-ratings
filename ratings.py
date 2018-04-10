@@ -1,11 +1,8 @@
 """Restaurant rating lister."""
 
 
-# put your code here
-import sys
-filename = sys.argv[1]
-
 def restaurant_ratings(filename):
+    """Translates text file to dictionary"""
 
     #reads ratings from file
     raw_restaurant_data = open(filename)
@@ -13,17 +10,16 @@ def restaurant_ratings(filename):
     #create dictionary
     restaurant_scores = {}
 
-   # new_name, new_rating = add_restaurant_rating()
-    #restaurant_scores[new_name.title()] = new_rating
-    
     #stores restaurant and rating to dictionary
 
     for line in raw_restaurant_data:
         name, rating = line.strip().split(":")
         restaurant_scores[name] = rating
 
+    raw_restaurant_data.close()
+
     #returns ratings in alphabetical order by restaurant
-    menus_for_restuarant(restaurant_scores)
+    return restaurant_scores
 
 
 def add_restaurant_rating(restaurant_scores):
@@ -39,12 +35,9 @@ def add_restaurant_rating(restaurant_scores):
 
         restaurant_scores[new_name.title()] = new_rating
 
-        return restaurant_scores
-
 
 def alpha_restaurants(restaurant_scores):
     """Allows user to view alphabetical restaurant scores"""
-
 
     for restaurant, rating in sorted(restaurant_scores.items()):
         print "%s is rated at %s." % (restaurant, rating)
@@ -67,7 +60,16 @@ def update_random_restaurant(restaurant_scores):
     #update rating
     restaurant_scores[rand_name] = new_rand_rating
 
-    return restaurant_scores
+
+def update_chosen_restaurant(restaurant_scores):
+    """Asks user for retaurant and updates rating"""
+
+    alpha_restaurants(restaurant_scores)
+
+    user_rest = get_good_restaurant(restaurant_scores)
+    user_new_rating = get_good_rating()
+    restaurant_scores[user_rest] = user_new_rating
+
 
 def get_good_rating():
     """ Asks for a user rating, checks if user rating is within 1-5 scale."""
@@ -77,34 +79,37 @@ def get_good_rating():
     return user_rating
 
 
-def menus_for_restuarant(restaurant_scores):
-    """Allows user to select functions to call"""
-
-    user_choice = "0"
-    while user_choice != "4":
-
-        user_choice = raw_input("""
-        1. See all the ratings
-        2. Add a new restaurant
-        3. Update a random restaurant
-        4. Quit
-        > """)
-
-        if user_choice == "1":
-            alpha_restaurants(restaurant_scores)
-        elif user_choice == "2":
-            add_restaurant_rating(restaurant_scores)
-        elif user_choice == "3":
-            update_random_restaurant(restaurant_scores)
-        elif user_choice == "4":
-            break
-        else:
-            user_choice = raw_input("Please enter a valid input. ")
+def get_good_restaurant(restaurant_scores):
+    """Asks user for restaurant, check if valid."""
+    user_rest = raw_input("Restaurant: ")
+    while user_rest not in restaurant_scores:
+        user_rest = raw_input("Please enter valid restaurant: ")
+    return user_rest
 
 
+import sys
+filename = sys.argv[1]
+restaurant_scores = restaurant_ratings(filename)
+user_choice = "0"
+while user_choice != "5":
 
+    user_choice = raw_input("""
+    1. See all the ratings
+    2. Add a new restaurant
+    3. Update a random restaurant
+    4. Update a chosen restaurant
+    5. Quit
+    > """)
 
-
-
-
-restaurant_ratings(filename)
+    if user_choice == "1":
+        alpha_restaurants(restaurant_scores)
+    elif user_choice == "2":
+        add_restaurant_rating(restaurant_scores)
+    elif user_choice == "3":
+        update_random_restaurant(restaurant_scores)
+    elif user_choice == "4":
+        update_chosen_restaurant(restaurant_scores)
+    elif user_choice == "5":
+        break
+    else:
+        user_choice = raw_input("Please enter a valid input. ")
